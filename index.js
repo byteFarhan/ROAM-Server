@@ -19,17 +19,21 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
-// collections
+//All Database collections
 // const database = client.db("B9A10-ROAM");
 // const tourist_spotsCollection = database.collection("tourist_spot");
 const tourist_spotsCollection = client
   .db("B9A10-ROAM")
   .collection("tourist_spots");
+const countries_tourist_spots = client
+  .db("B9A10-ROAM")
+  .collection("countries_tourist_spots");
 
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
+
     // get :: all tourist_spot
     app.get("/tourist_spots", async (req, res) => {
       const coursor = tourist_spotsCollection.find();
@@ -39,13 +43,22 @@ async function run() {
     // get :: single tourist_spot
     app.get("/tourist_spots/:id", async (req, res) => {
       const id = req.params.id;
+      //   const idInt = parseInt(id);
+      //   console.log(idInt);
       //   console.log(id);
       const query = { _id: new ObjectId(id) };
       const result = await tourist_spotsCollection.findOne(query);
       res.send(result);
     });
+    // Post :: insert single tourist spot in countries_tourist_spots collection in DB
+    app.post("/countries_tourist_spots", async (req, res) => {
+      const theSpot = req.body;
+      console.log(theSpot);
+      const result = await countries_tourist_spots.insertOne(theSpot);
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
