@@ -19,11 +19,23 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
+// collections
+// const database = client.db("B9A10-ROAM");
+// const tourist_spotsCollection = database.collection("tourist_spot");
+const tourist_spotsCollection = client
+  .db("B9A10-ROAM")
+  .collection("tourist_spots");
 
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+    // get tourist_spot
+    app.get("/tourist_spots", async (req, res) => {
+      const coursor = tourist_spotsCollection.find();
+      const result = await coursor.toArray();
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
@@ -40,6 +52,11 @@ run().catch(console.dir);
 app.get("/", (req, res) => {
   res.send("Roam Server is running...");
 });
+
+// // get tourist_spot
+// app.get("/tourist_spot", async (req, res) => {
+//   res.send();
+// });
 
 app.listen(prot, () => {
   console.log(`ROAM server is running on port ${prot}`);
