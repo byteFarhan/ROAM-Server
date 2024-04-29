@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const prot = process.env.PORT || 5000;
 
@@ -30,10 +30,18 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    // get tourist_spot
+    // get :: all tourist_spot
     app.get("/tourist_spots", async (req, res) => {
       const coursor = tourist_spotsCollection.find();
       const result = await coursor.toArray();
+      res.send(result);
+    });
+    // get :: single tourist_spot
+    app.get("/tourist_spots/:id", async (req, res) => {
+      const id = req.params.id;
+      //   console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const result = await tourist_spotsCollection.findOne(query);
       res.send(result);
     });
     // Send a ping to confirm a successful connection
