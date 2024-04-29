@@ -52,9 +52,24 @@ async function run() {
     });
     // Post :: insert single tourist spot in countries_tourist_spots collection in DB
     app.post("/countries_tourist_spots", async (req, res) => {
-      const theSpot = req.body;
-      console.log(theSpot);
-      const result = await countries_tourist_spots.insertOne(theSpot);
+      const newTouristSpot = req.body;
+      console.log(newTouristSpot);
+      const result = await countries_tourist_spots.insertOne(newTouristSpot);
+      res.send(result);
+    });
+
+    // Get :: find multiple data from countries_tourist_spots collection
+    app.get("/countries_tourist_spots", async (req, res) => {
+      const result = await countries_tourist_spots.find().toArray();
+      res.send(result);
+    });
+
+    // Get :: find single data from countries_tourist_spots collection
+    app.get("/countries_tourist_spots/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const result = await countries_tourist_spots.findOne(query);
       res.send(result);
     });
     // Send a ping to confirm a successful connection
