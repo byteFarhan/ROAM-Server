@@ -34,10 +34,18 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
-    // get :: all tourist_spot
+    // get :: all && multiple tourist_spot
     app.get("/tourist_spots", async (req, res) => {
       try {
-        const coursor = tourist_spots.find();
+        let query = {};
+        if (req.query.email) {
+          console.log(req.query.email);
+          query = { userEmail: req.query.email };
+        }
+        // const options = {
+        //   projection: {},
+        // };
+        const coursor = tourist_spots.find(query);
         const result = await coursor.toArray();
         res.send(result);
       } catch (err) {
@@ -51,7 +59,7 @@ async function run() {
         const id = req.params.id;
         //   const idInt = parseInt(id);
         //   console.log(idInt);
-        //   console.log(id);
+        console.log(id);
         const query = { _id: new ObjectId(id) };
         const result = await tourist_spots.findOne(query);
         res.send(result);
@@ -99,6 +107,25 @@ async function run() {
       );
       res.send(result);
     });
+
+    // DELETE :: delete single data from tourist_spots collection
+    app.delete("/tourist_spots/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const result = await tourist_spots.deleteOne(query);
+      res.send(result);
+    });
+
+    // Get :: find multiple data from tourist_spots collection with user email
+    // app.get("/tourist_spots/", async (req, res) => {
+    //   const email = req.query.email;
+    //   console.log(email);
+    //   const query = { userEmail: req.query.email };
+    //   const result = await tourist_spots.find(query).toArray();
+    //   res.send(result);
+    // });
+
     // Get :: find multiple data from countries_tourist_spots collection
     // app.get("/all_spots", async (req, res) => {
     //   try {
