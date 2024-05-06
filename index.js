@@ -145,6 +145,18 @@ async function run() {
         return res.send({ error: true, massage: err.massage });
       }
     });
+    // Get :: find single data from countries collection in DB
+    app.get("/countries/:country", async (req, res) => {
+      try {
+        const country = req.params.country;
+        // console.log(country);
+        const query = { countryName: capitalizeFirstLetter(country) };
+        const result = await countriesCollection.findOne(query);
+        res.send(result);
+      } catch (err) {
+        return res.send({ error: true, massage: err.massage });
+      }
+    });
 
     // Get :: find multiple data from tourist_spots collection with user email
     // app.get("/tourist_spots/", async (req, res) => {
