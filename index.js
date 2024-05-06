@@ -158,6 +158,16 @@ async function run() {
       }
     });
 
+    // Get :: find all datas from testimonial collection in DB
+    app.get("/testimonial", async (req, res) => {
+      try {
+        const result = await testimonialCollection.find().toArray();
+        res.send(result);
+      } catch (err) {
+        return res.send({ error: true, massage: err.massage });
+      }
+    });
+
     // Get :: find multiple data from tourist_spots collection with user email
     // app.get("/tourist_spots/", async (req, res) => {
     //   const email = req.query.email;
