@@ -14,12 +14,10 @@ function capitalizeFirstLetter(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
-// const uri = `mongodb://mongo:pvOVforYAvDvFHYRgiMNluhWgagEwMli@roundhouse.proxy.rlwy.net:39431`;
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster-b9a10.dliqx6o.mongodb.net/?retryWrites=true&w=majority&appName=cluster-B9A10`;
 // console.log(process.env.DB_USER);
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 // const uri =
-//   "mongodb+srv://farhanmazumder75:RrIlBw1KEt2dLs4B@cluster0.l6om5es.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
